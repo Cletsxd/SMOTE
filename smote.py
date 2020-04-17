@@ -53,9 +53,7 @@ def smote(T, N, k, Sample):
     Synthetic = []
     
     for i in range(int(T)):
-        print(i)
         nnarray = knearest(Sample[i], Sample, k, numattrs)
-        print(i, ".", 1)
         
         ## Populate
         NN = N/100
@@ -70,7 +68,6 @@ def smote(T, N, k, Sample):
                 
                 at.append(Sample[i][attr] + gap * dif)
             
-            print(at)
             Synthetic.append(at)
             newindex += 1
             NN = NN - 1
@@ -82,21 +79,25 @@ dts = Datasets()
 #dts.remove_data(10)
 dts.remove_data(1)
 
-x_iris = dts.X_abalone
-y_iris = dts.Y_abalone
-x_r_iris = dts.X_rem_abalone
-y_r_iris = dts.Y_rem_abalone
+x_iris = dts.X_iris
+y_iris = dts.Y_iris
+x_r_iris = dts.X_rem_iris
+y_r_iris = dts.Y_rem_iris
 
 # print(dts.data_info(y_iris), dts.data_info(y_r_iris))
 
-def smote_data(y_r):
+def reshape_combine(x, new_data):
+    new_data_added = np.append(x, new_data)
+    new_data_added = new_data_added.reshape(x.shape[0] + len(new_data), x.shape[1])
+    
+    return new_data_added
+
+def smote_data(x_r, y_r, dts, k):
     ### N compute ###
     count_y, ind_mayor, class_mayor = dts.data_info(y_r)
     
     name_class = list(count_y[0])
     count_class = list(count_y[1])
-    
-    print(name_class, count_class, count_class[ind_mayor[0][0]])
     
     N_class = []
     T_class = []
@@ -112,7 +113,22 @@ def smote_data(y_r):
     for n in range(len(N_class)):
         N_class[n] = (int((N_mayor - N_class[n]) / N_class[n])) * 100
     
-    Syns = []
+    new_x = x_r[:]
+    new_y = y_r[:]
+    
     for t in range(len(T_class)):
-        T_minority_class_samples = get_minority(T_name_class[t], y_r_iris, x_r_iris)
-        Syns.append(smote(T_class[t], N_class[t], 5, T_minority_class_samples))
+        T_minority_class_samples = get_minority(T_name_class[t], y_r, x_r)
+        
+        nx = smote(T_class[t], N_class[t], k, T_minority_class_samples)
+        
+        ## Combine new data from smote ##
+        a = new_x.shape[0]
+        new_x = reshape_combine(new_x, nx)
+        
+        new_count_y = new_x.shape[0] - a
+        
+        for _ in range(new_count_y):
+            new_y = np.append(new_y, [T_name_class[t]])
+            new_y = np.reshape(new_y, (new_y.shape[0], 1))
+    
+    return new_x, new_y
