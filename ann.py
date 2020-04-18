@@ -153,8 +153,8 @@ def fit(X_train, Y_train, X_test, Y_test, topology, lr, act_foo, epochs, prt):
         if i % 25 == 0 and prt:
             #print(out)
         
-            print("e:", loss[-1])
-            print("e_t:", loss_t[-1])
+            print("Train error:", loss[-1])
+            print("Test error:", loss_t[-1])
     
     outt = train(neural_net, X_test, Y_t, e2medio, learning_rate=lr, train = False)
     
