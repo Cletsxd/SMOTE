@@ -17,6 +17,7 @@ from sklearn.metrics import accuracy_score
 from data import Datasets
 import random
 import ann as rna
+import smote as sm
 
 def separate(test_percent, X, Y, S):
     random.seed(S)
@@ -96,16 +97,24 @@ y_abalone_r = dts.Y_rem_abalone
 
 X_train_abalone, Y_train_abalone, X_test_abalone, Y_test_abalone = separate(0.3, x_abalone, y_abalone, S)
 X_train_r_abalone, Y_train_r_abalone, X_test_r_abalone, Y_test_r_abalone = separate(0.3, x_abalone_r, y_abalone_r, S)
-print("Abalone original:")
+print("\nAbalone original:")
 print("NBG:", nb_gaussiano(X_train_abalone, Y_train_abalone, X_test_abalone, Y_test_abalone))
 print("KNN:", knn(X_train_abalone, Y_train_abalone, X_test_abalone, Y_test_abalone, 15))
 print("ID3:", id3(X_train_abalone, Y_train_abalone, X_test_abalone, Y_test_abalone))
 print("ANN:", neural_net(X_train_abalone, Y_train_abalone, X_test_abalone, Y_test_abalone, 0.0001, sigmoidal, 10000, prt = False))
-print("Abalone rem:")
+print("\nAbalone rem:")
 print("NBG:", nb_gaussiano(X_train_r_abalone, Y_train_r_abalone, X_test_r_abalone, Y_test_r_abalone))
 print("KNN:", knn(X_train_r_abalone, Y_train_r_abalone, X_test_r_abalone, Y_test_r_abalone, 15))
 print("ID3:", id3(X_train_r_abalone, Y_train_r_abalone, X_test_r_abalone, Y_test_r_abalone))
 print("ANN:", neural_net(X_train_r_abalone, Y_train_r_abalone, X_test_r_abalone, Y_test_r_abalone, 0.0001, sigmoidal, 10000, prt = False))
+
+print("\nAbalone smoted:")
+x_abalone_new, y_abalone_new = sm.smote_data(x_abalone_r, y_abalone_r, dts, 5)
+X_train_abalone_new, Y_train_abalone_new, X_test_abalone_new, Y_test_abalone_new = separate(0.3, x_abalone_new, y_abalone_new, S)
+print("NBG:", nb_gaussiano(X_train_abalone_new, Y_train_abalone_new, X_test_abalone_new, Y_test_abalone_new))
+print("KNN:", knn(X_train_abalone_new, Y_train_abalone_new, X_test_abalone_new, Y_test_abalone_new, 15))
+print("ID3:", id3(X_train_abalone_new, Y_train_abalone_new, X_test_abalone_new, Y_test_abalone_new))
+print("ANN:", neural_net(X_train_abalone_new, Y_train_abalone_new, X_test_abalone_new, Y_test_abalone_new, 0.0001, sigmoidal, 10000, prt = False))
 
 ### DIGITS ###
 x_digits = dts.X_digits
@@ -120,11 +129,19 @@ print("NBG:", nb_gaussiano(X_train_digits, Y_train_digits, X_test_digits, Y_test
 print("KNN:", knn(X_train_digits, Y_train_digits, X_test_digits, Y_test_digits, 15))
 print("ID3:", id3(X_train_digits, Y_train_digits, X_test_digits, Y_test_digits))
 print("ANN:", neural_net(X_train_digits, Y_train_digits, X_test_digits, Y_test_digits, 0.001, sigmoidal, 1000, prt = False))
-print("Digits rem:")
+print("\nDigits rem:")
 print("NBG:", nb_gaussiano(X_train_r_digits, Y_train_r_digits, X_test_r_digits, Y_test_r_digits))
 print("KNN:", knn(X_train_r_digits, Y_train_r_digits, X_test_r_digits, Y_test_r_digits, 15))
 print("ID3:", id3(X_train_r_digits, Y_train_r_digits, X_test_r_digits, Y_test_r_digits))
 print("ANN:", neural_net(X_train_r_digits, Y_train_r_digits, X_test_r_digits, Y_test_r_digits, 0.001, sigmoidal, 1000, prt = False))
+
+print("\nDigits smoted:")
+x_digits_new, y_digits_new = sm.smote_data(x_digits_r, y_digits_r, dts, 5)
+X_train_digits_new, Y_train_digits_new, X_test_digits_new, Y_test_digits_new = separate(0.3, x_digits_new, y_digits_new, S)
+print("NBG:", nb_gaussiano(X_train_digits_new, Y_train_digits_new, X_test_digits_new, Y_test_digits_new))
+print("KNN:", knn(X_train_digits_new, Y_train_digits_new, X_test_digits_new, Y_test_digits_new, 15))
+print("ID3:", id3(X_train_digits_new, Y_train_digits_new, X_test_digits_new, Y_test_digits_new))
+print("ANN:", neural_net(X_train_digits_new, Y_train_digits_new, X_test_digits_new, Y_test_digits_new, 0.001, sigmoidal, 1000, prt = False))
 
 ### CANCER ###
 x_cancer = dts.X_cancer
@@ -134,16 +151,24 @@ y_cancer_r = dts.Y_rem_cancer
 
 X_train_cancer, Y_train_cancer, X_test_cancer, Y_test_cancer = separate(0.3, x_cancer, y_cancer, S)
 X_train_r_cancer, Y_train_r_cancer, X_test_r_cancer, Y_test_r_cancer = separate(0.3, x_cancer_r, y_cancer_r, S)
-print("Cancer original:")
+print("\nCancer original:")
 print("NBG:", nb_gaussiano(X_train_cancer, Y_train_cancer, X_test_cancer, Y_test_cancer))
 print("KNN:", knn(X_train_cancer, Y_train_cancer, X_test_cancer, Y_test_cancer, 15))
 print("ID3:", id3(X_train_cancer, Y_train_cancer, X_test_cancer, Y_test_cancer))
 print("ANN:", neural_net(X_train_cancer, Y_train_cancer, X_test_cancer, Y_test_cancer, 0.0001, sigmoidal, 6000, prt = False))
-print("Cancer rem:")
+print("\nCancer rem:")
 print("NBG:", nb_gaussiano(X_train_r_cancer, Y_train_r_cancer, X_test_r_cancer, Y_test_r_cancer))
 print("KNN:", knn(X_train_r_cancer, Y_train_r_cancer, X_test_r_cancer, Y_test_r_cancer, 15))
 print("ID3:", id3(X_train_r_cancer, Y_train_r_cancer, X_test_r_cancer, Y_test_r_cancer))
 print("ANN:", neural_net(X_train_r_cancer, Y_train_r_cancer, X_test_r_cancer, Y_test_r_cancer, 0.0001, sigmoidal, 6000, prt = False))
+
+print("\nCancer smoted:")
+x_cancer_new, y_cancer_new = sm.smote_data(x_cancer_r, y_cancer_r, dts, 5)
+X_train_cancer_new, Y_train_cancer_new, X_test_cancer_new, Y_test_cancer_new = separate(0.3, x_cancer_new, y_cancer_new, S)
+print("NBG:", nb_gaussiano(X_train_cancer_new, Y_train_cancer_new, X_test_cancer_new, Y_test_cancer_new))
+print("KNN:", knn(X_train_cancer_new, Y_train_cancer_new, X_test_cancer_new, Y_test_cancer_new, 15))
+print("ID3:", id3(X_train_cancer_new, Y_train_cancer_new, X_test_cancer_new, Y_test_cancer_new))
+print("ANN:", neural_net(X_train_cancer_new, Y_train_cancer_new, X_test_cancer_new, Y_test_cancer_new, 0.0001, sigmoidal, 6000, prt = False))
 
 ### HUMAN ###
 x_human = dts.X_human
@@ -153,16 +178,24 @@ y_human_r = dts.Y_rem_human
 
 X_train_human, Y_train_human, X_test_human, Y_test_human = separate(0.3, x_human, y_human, S)
 X_train_r_human, Y_train_r_human, X_test_r_human, Y_test_r_human = separate(0.3, x_human_r, y_human_r, S)
-print("Human original:")
+print("\nHuman original:")
 print("NBG:", nb_gaussiano(X_train_human, Y_train_human, X_test_human, Y_test_human))
 print("KNN:", knn(X_train_human, Y_train_human, X_test_human, Y_test_human, 15))
 print("ID3:", id3(X_train_human, Y_train_human, X_test_human, Y_test_human))
 print("ANN:", neural_net(X_train_human, Y_train_human, X_test_human, Y_test_human, 0.001, sigmoidal, 2500, prt = False))
-print("Human rem:")
+print("\nHuman rem:")
 print("NBG:", nb_gaussiano(X_train_r_human, Y_train_r_human, X_test_r_human, Y_test_r_human))
 print("KNN:", knn(X_train_r_human, Y_train_r_human, X_test_r_human, Y_test_r_human, 15))
 print("ID3:", id3(X_train_r_human, Y_train_r_human, X_test_r_human, Y_test_r_human))
 print("ANN:", neural_net(X_train_r_human, Y_train_r_human, X_test_r_human, Y_test_r_human, 0.001, sigmoidal, 2500, prt = False))
+
+print("\nHuman smoted:")
+x_human_new, y_human_new = sm.smote_data(x_human_r, y_human_r, dts, 5)
+X_train_human_new, Y_train_human_new, X_test_human_new, Y_test_human_new = separate(0.3, x_human_new, y_human_new, S)
+print("NBG:", nb_gaussiano(X_train_human_new, Y_train_human_new, X_test_human_new, Y_test_human_new))
+print("KNN:", knn(X_train_human_new, Y_train_human_new, X_test_human_new, Y_test_human_new, 15))
+print("ID3:", id3(X_train_human_new, Y_train_human_new, X_test_human_new, Y_test_human_new))
+print("ANN:", neural_net(X_train_human_new, Y_train_human_new, X_test_human_new, Y_test_human_new, 0.001, sigmoidal, 2500, prt = False))
 
 ### IRIS ###
 x_iris = dts.X_iris
@@ -172,16 +205,24 @@ y_iris_r = dts.Y_rem_iris
 
 X_train_iris, Y_train_iris, X_test_iris, Y_test_iris = separate(0.3, x_iris, y_iris, S)
 X_train_r_iris, Y_train_r_iris, X_test_r_iris, Y_test_r_iris = separate(0.3, x_iris_r, y_iris_r, S)
-print("Iris original:")
+print("\nIris original:")
 print("NBG:", nb_gaussiano(X_train_iris, Y_train_iris, X_test_iris, Y_test_iris))
 print("KNN:", knn(X_train_iris, Y_train_iris, X_test_iris, Y_test_iris, 15))
 print("ID3:", id3(X_train_iris, Y_train_iris, X_test_iris, Y_test_iris))
 print("ANN:", neural_net(X_train_iris, Y_train_iris, X_test_iris, Y_test_iris, 0.01, sigmoidal, 15000, prt = False))
-print("Iris rem:")
+print("\nIris rem:")
 print("NBG:", nb_gaussiano(X_train_r_iris, Y_train_r_iris, X_test_r_iris, Y_test_r_iris))
 print("KNN:", knn(X_train_r_iris, Y_train_r_iris, X_test_r_iris, Y_test_r_iris, 15))
 print("ID3:", id3(X_train_r_iris, Y_train_r_iris, X_test_r_iris, Y_test_r_iris))
 print("ANN:", neural_net(X_train_r_iris, Y_train_r_iris, X_test_r_iris, Y_test_r_iris, 0.01, sigmoidal, 15000, prt = False))
+
+print("\nIris smoted:")
+x_iris_new, y_iris_new = sm.smote_data(x_iris_r, y_iris_r, dts, 5)
+X_train_iris_new, Y_train_iris_new, X_test_iris_new, Y_test_iris_new = separate(0.3, x_iris_new, y_iris_new, S)
+print("NBG:", nb_gaussiano(X_train_iris_new, Y_train_iris_new, X_test_iris_new, Y_test_iris_new))
+print("KNN:", knn(X_train_iris_new, Y_train_iris_new, X_test_iris_new, Y_test_iris_new, 15))
+print("ID3:", id3(X_train_iris_new, Y_train_iris_new, X_test_iris_new, Y_test_iris_new))
+print("ANN:", neural_net(X_train_iris_new, Y_train_iris_new, X_test_iris_new, Y_test_iris_new, 0.01, sigmoidal, 15000, prt = False))
 
 ### WINE ###
 x_wine = dts.X_wine
@@ -191,13 +232,21 @@ y_wine_r = dts.Y_rem_wine
 
 X_train_wine, Y_train_wine, X_test_wine, Y_test_wine = separate(0.3, x_wine, y_wine, S)
 X_train_r_wine, Y_train_r_wine, X_test_r_wine, Y_test_r_wine = separate(0.3, x_wine_r, y_wine_r, S)
-print("Wine original:")
+print("\nWine original:")
 print("NBG:", nb_gaussiano(X_train_wine, Y_train_wine, X_test_wine, Y_test_wine))
 print("KNN:", knn(X_train_wine, Y_train_wine, X_test_wine, Y_test_wine, 15))
 print("ID3:", id3(X_train_wine, Y_train_wine, X_test_wine, Y_test_wine))
 print("ANN:", neural_net(X_train_wine, Y_train_wine, X_test_wine, Y_test_wine, 0.004, tangenteh, 6000, prt = False))
-print("Wine rem:")
+print("\nWine rem:")
 print("NBG:", nb_gaussiano(X_train_r_wine, Y_train_r_wine, X_test_r_wine, Y_test_r_wine))
 print("KNN:", knn(X_train_r_wine, Y_train_r_wine, X_test_r_wine, Y_test_r_wine, 15))
 print("ID3:", id3(X_train_r_wine, Y_train_r_wine, X_test_r_wine, Y_test_r_wine))
 print("ANN:", neural_net(X_train_r_wine, Y_train_r_wine, X_test_r_wine, Y_test_r_wine, 0.004, tangenteh, 6000, prt = False))
+
+print("\nWine smoted:")
+x_wine_new, y_wine_new = sm.smote_data(x_wine_r, y_wine_r, dts, 5)
+X_train_wine_new, Y_train_wine_new, X_test_wine_new, Y_test_wine_new = separate(0.3, x_wine_new, y_wine_new, S)
+print("NBG:", nb_gaussiano(X_train_wine_new, Y_train_wine_new, X_test_wine_new, Y_test_wine_new))
+print("KNN:", knn(X_train_wine_new, Y_train_wine_new, X_test_wine_new, Y_test_wine_new, 15))
+print("ID3:", id3(X_train_wine_new, Y_train_wine_new, X_test_wine_new, Y_test_wine_new))
+print("ANN:", neural_net(X_train_wine_new, Y_train_wine_new, X_test_wine_new, Y_test_wine_new, 0.004, tangenteh, 6000, prt = False))

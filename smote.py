@@ -43,8 +43,6 @@ def knearest(s, Sample, k, atts):
     return r[:k]
 
 def smote(T, N, k, Sample):
-    print("T:", T, "N:", N, "k:", k)
-    
     if N < 100:
         print(Sample)
     
@@ -74,15 +72,15 @@ def smote(T, N, k, Sample):
     
     return Synthetic
 
-dts = Datasets()
+#dts = Datasets()
 
 #dts.remove_data(10)
-dts.remove_data(1)
+#dts.remove_data(1)
 
-x_iris = dts.X_iris
-y_iris = dts.Y_iris
-x_r_iris = dts.X_rem_iris
-y_r_iris = dts.Y_rem_iris
+#x_iris = dts.X_iris
+#y_iris = dts.Y_iris
+#x_r_iris = dts.X_rem_iris
+#y_r_iris = dts.Y_rem_iris
 
 # print(dts.data_info(y_iris), dts.data_info(y_r_iris))
 
