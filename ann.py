@@ -109,15 +109,6 @@ tangenteh = (lambda x: np.tanh(x),
 e2medio = (lambda yp, yr: np.mean((yp, yr)) ** 2,
             lambda yp, yr: (yp - yr))
 
-# Función de costo
-# ERROR CUADRÁTICO MEDIO
-# yp: salida real de la ANN
-# yr: salida predicha de la entrada
-# e2medio[0](yp, yr) // función
-# e2medio[1](yp, yr) // derivada
-e2medio = (lambda yp, yr: np.mean((yp, yr)) ** 2,
-            lambda yp, yr: (yp - yr))
-
 def fit(X_train, Y_train, X_test, Y_test, topology, lr, act_foo, epochs, prt):
     neural_net = create_nn(topology, act_foo)
     
